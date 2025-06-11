@@ -43,6 +43,8 @@ export default function App() {
 
     const guessLetter = (char) => setGuessedLetters((prevLetters) => prevLetters.includes(char) ? [...prevLetters] : [...prevLetters, char]);
 
+    const word = currentWord.split('').map(char => guessedLetters.includes(char) ? char : '')
+
     return (
         <div className='assembly-end-game'>
             <div className='center'>
@@ -51,7 +53,7 @@ export default function App() {
                 <StatusBar gameState='lost'/>
                 <StatusBar gameState='won'/>
                 <LanguageBar/>
-                <Word word={currentWord}/>
+                <Word word={word}/>
                 <Keyboard currentWord={currentWord} guess={guessLetter} guessedLetters={guessedLetters} />
                 <button className="new-game">New Game</button>
             </div>
