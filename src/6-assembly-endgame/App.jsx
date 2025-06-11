@@ -27,11 +27,11 @@ export default function App() {
     const word = currentWord.split('').map(char => (gameIsLost || guessedLetters.includes(char)) ? char : '')
     const guessesRemaining = (languages.length - 1) - wrongGuessCount;
 
-    document.addEventListener('keypress', keyPressCb);
-
     useEffect(() => {
+        document.addEventListener('keypress', keyPressCb);
+
         return () => document.removeEventListener('keypress', keyPressCb);
-    });
+    }, []);
 
     const guessLetter = (guess) => {
         setGuessedLetters((prevLetters) => prevLetters.includes(guess) ? prevLetters : [...prevLetters, guess]);
