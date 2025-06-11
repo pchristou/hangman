@@ -7,43 +7,27 @@ import Keyboard from './components/Keyboard.jsx';
 import { languages } from './data/languages.js';
 
 /**
- * Project planning:
- *
- * Questions to ask yourself before writing any code:
- *
- * - What are the main containers of elements I need
- *   in this app?
- *
- * Main/App - to hold everything together
- * Header (title and description of game)
- * Banner
- * Pill - each programming language
- * Guess the letters (Letter Tile)
- * Key stroke (Keyboard Tile)
- *
- * - What values will need to be saved in state vs.
- *   what values can be derived from the state?
- *
- * programmingLanguages (guesses). Based on the length of this, gives us how many lives we have (derived)
- * gameState - empty (no banner), started, won, lost, derived state
- * letters attempted (based on this, can get the difference to determine how many lefts we have left)
- * pill - livesGone = 2, then first 2 will have skull vibes
- * keyboard tile - default, correct, incorrect
- *
- * - How will the user interact with the app? What
- *   events do I need to handle?
- *
- * Button on click
- * Each letter being strokes
- *
- */
+ *  * Backlog:
+ *  *
+ *  * - Farewell messages in status section
+ *  * - Fix a11y issues
+ *  * - Make the new game button work
+ *  * - Choose a random word from a list of words
+ *  * - Confetti drop when the user wins
+ *  */
 export default function App() {
 
     const [currentWord, setCurrentWord] = useState('react'.toUpperCase());
     const [guessedLetters, setGuessedLetters] = useState([]);
     const [gameState, setGameState] = useState(null);
 
-    const guessLetter = (char) => !['lost', 'won'].includes(gameState) && setGuessedLetters((prevLetters) => prevLetters.includes(char) ? [...prevLetters] : [...prevLetters, char]);
+    const guessLetter = (guess) => {
+        // no previous guess and currentWord does not include
+        const incorrectGuess = !guessedLetters.includes(guess) && !currentWord.includes(guess);
+        incorrectGuess ? setGameState('incorrect') : setGameState(null);
+
+        !['lost', 'won'].includes(gameState) && setGuessedLetters((prevLetters) => prevLetters.includes(guess) ? [...prevLetters] : [...prevLetters, guess]);
+    }
 
     const word = currentWord.split('').map(char => guessedLetters.includes(char) ? char : '')
 
@@ -66,7 +50,7 @@ export default function App() {
         <div className='assembly-end-game'>
             <div className='center'>
                 <Header/>
-                <StatusBar gameState={gameState}/>
+                <StatusBar gameState={gameState} language={languages[wrongGuessCount-1].name} />
                 <LanguageBar wrongGuessCount={wrongGuessCount}/>
                 <Word word={word}/>
                 <Keyboard currentWord={currentWord} guess={guessLetter} guessedLetters={guessedLetters} />

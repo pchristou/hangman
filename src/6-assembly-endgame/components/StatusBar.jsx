@@ -1,11 +1,13 @@
-export function StatusBar({ gameState }) {
+import { getFarewellText } from '../utils/utils.js';
+
+export function StatusBar({ gameState, language }) {
 
     let status = null;
 
     switch (gameState) {
         case 'incorrect':
             status = <div className="status-bar status-bar-incorrect">
-                <span>“Farewell HTML & CSS” 🫡</span>
+                <span>{getFarewellText(language)}</span>
             </div>;
             break;
         case 'won':
