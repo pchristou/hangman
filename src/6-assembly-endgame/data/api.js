@@ -11,7 +11,6 @@ export function getWords (randLetter) {
     return fetch(`${prefix}sp=${randLetter}*???&md=f`)
     .then(response => response.json())
     .then(data => {
-        console.log('Datamuse response:', data);
         return data;
     })
     .catch(error => {
@@ -29,7 +28,6 @@ export function getDefinitionFor(word) {
     return fetch(`${prefix}sp=${word}&md=d&max=1`)
     .then(response => response.json())
     .then(data => {
-        console.log('Datamuse response:', stripPrefix(data[0].defs[0]));
         return data[0]?.defs ? stripPrefix(data[0].defs[0]) : `How embarrassing, we don't have a definition for ${word} yet`;
     })
     .catch(error => {
