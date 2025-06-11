@@ -15,7 +15,7 @@ import { getRandomWord } from './utils/utils.js';
 export default function App() {
 
     // State
-    const [currentWord, setCurrentWord] = useState(getRandomWord());
+    const [currentWord, setCurrentWord] = useState(() => getRandomWord());
     const [guessedLetters, setGuessedLetters] = useState([]);
 
     // Derived
@@ -38,15 +38,15 @@ export default function App() {
     }
 
     const alphabet = () => {
-        return [...Array(26).keys()].map((n) => String.fromCharCode(65 + n).toUpperCase());
+        return [...Array(26).keys()].map((n) => String.fromCharCode(97 + n));
     }
 
     function keyPressCb(event) {
 
-        const keyPress = event.key.toUpperCase();
+        const keyPress = event.key;
 
         if(!gameInProgress()) {
-            if(keyPress === 'ENTER') {
+            if(keyPress === 'enter') {
                 restart();
             }
         }
@@ -54,7 +54,7 @@ export default function App() {
         if(alphabet().includes(keyPress)) {
             // prevent duplicates
             if(!guessedLetters.includes(keyPress)) {
-                guessLetter(event.key.toUpperCase());
+                guessLetter(event.key);
             }
         }
     }

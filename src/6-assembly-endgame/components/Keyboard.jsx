@@ -13,10 +13,10 @@ export default function Keyboard({ alphabet, currentWord, gameInProgress, guess,
             aria-label={`Letter ${char}`}
             aria-disabled={!gameInProgress}
             disabled={!gameInProgress()}
-            onClick={() => guess(char.toUpperCase())}
+            onClick={() => guess(char)}
             key={char}
             className={style}>
-            {char}
+            {char.toUpperCase()}
         </button>
     });
 
