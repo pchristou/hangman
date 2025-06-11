@@ -1,4 +1,6 @@
 import Header from './components/Header.jsx';
+import { StatusBar } from './components/StatusBar.jsx';
+import LanguageBar from './components/LanguageBar.jsx';
 
 /**
  * Project planning:
@@ -32,9 +34,16 @@ import Header from './components/Header.jsx';
  *
  */
 export default function App() {
+
     return (
-        <div className='assemblyEndGame'>
-            <Header />
+        <div className='assembly-end-game'>
+            <div className='center'>
+                <Header />
+                <StatusBar gameState='correct' />
+                <StatusBar gameState='lost' />
+                <StatusBar gameState='won' />
+                <LanguageBar />
+            </div>
         </div>
     )
 }
