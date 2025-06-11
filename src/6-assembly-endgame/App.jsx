@@ -2,11 +2,11 @@ import Header from './components/Header.jsx';
 import { StatusBar } from './components/StatusBar.jsx';
 import LanguageBar from './components/LanguageBar.jsx';
 import Word from './components/Word.jsx';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Keyboard from './components/Keyboard.jsx';
 import { languages } from './data/languages.js';
 import Confetti from 'react-confetti';
-import { getRandomWord } from './utils/utils.js';
+import { getWords } from './data/api.js';
 
 /**
  *  * Backlog:
@@ -15,60 +15,82 @@ import { getRandomWord } from './utils/utils.js';
 export default function App() {
 
     // State
-    const [currentWord, setCurrentWord] = useState(() => getRandomWord());
+    const [currentWord, setCurrentWord] = useState(() => null);
     const [guessedLetters, setGuessedLetters] = useState([]);
+    const [dictionary, setDictionary] = useState([]);
+    const [lastKeyStroke, setLastKeyStroke] = useState(null);
+
+    // Refs
+    // The ref allows us to avoid rebinding the keyPressCb event handler every time guessedLetters changes = better performance
+    const guessedLettersRef = useRef(guessedLetters);
 
     // Derived
     const wrongGuessCount = guessedLetters.reduce((acc, curr) => !currentWord.includes(curr) ? acc + 1 : acc, 0);
     const gameIsLost = wrongGuessCount === (languages.length - 1);
-    const gameIsWon = currentWord.split('').every(char => guessedLetters.includes(char));
+    const gameIsWon = currentWord?.split('').every(char => guessedLetters.includes(char));
     const lastGuessedLetter = guessedLetters[guessedLetters.length - 1];
-    const lastGuessIncorrect = lastGuessedLetter && !currentWord.includes(lastGuessedLetter);
-    const word = currentWord.split('').map(char => (gameIsLost || guessedLetters.includes(char)) ? char : '')
+    const lastGuessIncorrect = lastGuessedLetter && !currentWord?.includes(lastGuessedLetter);
+    const word = currentWord?.split('').map(char => (gameIsLost || guessedLetters.includes(char)) ? char : '')
     const guessesRemaining = (languages.length - 1) - wrongGuessCount;
 
     useEffect(() => {
-        document.addEventListener('keypress', keyPressCb);
+        getWords().then(w => {
+            setDictionary(w);
+            setCurrentWord(w[0].word);
+        });
+    }, []);
 
-        return () => document.removeEventListener('keypress', keyPressCb);
-    });
+    useEffect(() => {
+        guessedLettersRef.current = guessedLetters;
+    }, [guessedLetters]);
+
+    const getNewWord = () => {
+        return dictionary[Math.floor(Math.random() * dictionary.length)].word;
+    };
+
+    const gameInProgress = () => {
+        return (!gameIsLost && !gameIsWon);
+    };
 
     const guessLetter = (guess) => {
         setGuessedLetters((prevLetters) => prevLetters.includes(guess) ? prevLetters : [...prevLetters, guess]);
     }
 
+    const restart = () => {
+        setGuessedLetters([]);
+        setCurrentWord(getNewWord());
+    };
+
     const alphabet = () => {
         return [...Array(26).keys()].map((n) => String.fromCharCode(97 + n));
     }
 
-    function keyPressCb(event) {
+    if(!gameInProgress()) {
+        if(lastKeyStroke === 'enter') {
+            restart();
+        }
+    }
 
+    if(alphabet().includes(lastKeyStroke) && gameInProgress()) {
+        if(!guessedLetters.includes(lastKeyStroke)) {
+            guessLetter(event.key);
+        }
+    }
+
+    const keyPressCb = useCallback((event) => {
         const keyPress = event.key.toLowerCase();
 
-        if(!gameInProgress()) {
-            if(keyPress === 'enter') {
-                restart();
-            }
+        if(!guessedLettersRef.current.includes(keyPress)) {
+            setLastKeyStroke(keyPress);
         }
+    }, []);
 
-        if(alphabet().includes(keyPress) && gameInProgress()) {
-            // prevent duplicates
-            if(!guessedLetters.includes(keyPress)) {
-                guessLetter(event.key);
-            }
-        }
-    }
+    useEffect(() => {
+        document.addEventListener('keypress', keyPressCb);
+        return () => { console.log('remove evt'); return document.removeEventListener('keypress', keyPressCb) };
+    }, []);
 
-    function restart() {
-        setGuessedLetters([]);
-        setCurrentWord(getRandomWord());
-    }
-
-    function gameInProgress() {
-        return (!gameIsLost && !gameIsWon);
-    }
-
-    return (
+    return currentWord && (
         <div className='assembly-end-game'>
             <div className='center'>
 
