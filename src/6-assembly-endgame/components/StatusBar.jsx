@@ -1,15 +1,16 @@
 import { getFarewellText } from '../utils/utils.js';
 
-export function StatusBar({ gameState, language }) {
+export function StatusBar({ gameState, isLastGuessIncorrect, language }) {
 
     let status = null;
 
-    switch (gameState) {
-        case 'incorrect':
-            status = <div className="status-bar status-bar-incorrect">
-                <span>{getFarewellText(language)}</span>
-            </div>;
-            break;
+    if(isLastGuessIncorrect) {
+        status = <div className="status-bar status-bar-incorrect">
+            <span>{getFarewellText(language)}</span>
+        </div>;
+    } else {
+
+        switch (gameState) {
         case 'won':
             status = <div className="status-bar status-bar-won">
                 <span className="title">You win!</span>
@@ -24,6 +25,7 @@ export function StatusBar({ gameState, language }) {
             break;
         default:
             status = null;
+        }
     }
 
     return (

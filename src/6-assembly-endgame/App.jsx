@@ -22,12 +22,10 @@ export default function App() {
     const [gameState, setGameState] = useState(null);
 
     const guessLetter = (guess) => {
-        // no previous guess and currentWord does not include
-        const incorrectGuess = !guessedLetters.includes(guess) && !currentWord.includes(guess);
-        incorrectGuess ? setGameState('incorrect') : setGameState(null);
-
         !['lost', 'won'].includes(gameState) && setGuessedLetters((prevLetters) => prevLetters.includes(guess) ? [...prevLetters] : [...prevLetters, guess]);
     }
+
+    const lastGuessIncorrect = guessedLetters.length > 0 && !currentWord.includes(guessedLetters[guessedLetters.length - 1]);
 
     const word = currentWord.split('').map(char => guessedLetters.includes(char) ? char : '')
 
@@ -50,7 +48,7 @@ export default function App() {
         <div className='assembly-end-game'>
             <div className='center'>
                 <Header/>
-                <StatusBar gameState={gameState} language={languages[wrongGuessCount-1].name} />
+                <StatusBar gameState={gameState} isLastGuessIncorrect={lastGuessIncorrect} language={wrongGuessCount >= 1 && languages[wrongGuessCount-1].name} />
                 <LanguageBar wrongGuessCount={wrongGuessCount}/>
                 <Word word={word}/>
                 <Keyboard currentWord={currentWord} guess={guessLetter} guessedLetters={guessedLetters} />
