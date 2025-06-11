@@ -18,8 +18,8 @@ export default function App() {
     const [guessedLetters, setGuessedLetters] = useState([]);
 
     // Derived
-    const lastGuessedLetter = guessedLetters[guessedLetters.length - 1] ?? null;
-    const lastGuessIncorrect = guessedLetters.length > 0 && !currentWord.includes(lastGuessedLetter);
+    const lastGuessedLetter = guessedLetters[guessedLetters.length - 1];
+    const lastGuessIncorrect = lastGuessedLetter && !currentWord.includes(lastGuessedLetter);
     const word = currentWord.split('').map(char => guessedLetters.includes(char) ? char : '')
     const wrongGuessCount = guessedLetters.reduce((acc, curr) => !currentWord.includes(curr) ? acc + 1 : acc, 0);
     const gameIsLost = wrongGuessCount === (languages.length - 1);
@@ -33,7 +33,7 @@ export default function App() {
     });
 
     const guessLetter = (guess) => {
-        setGuessedLetters((prevLetters) => prevLetters.includes(guess) ? [...prevLetters] : [...prevLetters, guess]);
+        setGuessedLetters((prevLetters) => prevLetters.includes(guess) ? prevLetters : [...prevLetters, guess]);
     }
 
     const alphabet = () => {
