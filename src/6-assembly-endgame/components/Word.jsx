@@ -2,8 +2,6 @@ import { clsx } from 'clsx';
 
 export default function Word({ word, gameIsLost, currentWord }) {
 
-    console.log(word, gameIsLost, currentWord);
-
     const letters = word.map((letter, i) => {
         const letterStyle = clsx('letter', { reveal: gameIsLost && letter === "" })
         return <span key={i} className={letterStyle}>
