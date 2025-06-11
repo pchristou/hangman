@@ -10,14 +10,12 @@ import { languages } from './data/languages.js';
  *  * Backlog:
  *  *
  *  * - Fix a11y issues
- *  * - Make the new game button work
- *  * - Choose a random word from a list of words
  *  * - Confetti drop when the user wins
  *  */
 export default function App() {
 
     // State
-    const [currentWord, setCurrentWord] = useState('react'.toUpperCase());
+    const [currentWord, setCurrentWord] = useState(random());
     const [guessedLetters, setGuessedLetters] = useState([]);
 
     // Derived
@@ -27,12 +25,19 @@ export default function App() {
     const gameIsLost = wrongGuessCount === (languages.length - 1);
     const gameIsWon = currentWord.split('').every(char => guessedLetters.includes(char));
 
+    console.log(currentWord, guessedLetters);
     const guessLetter = (guess) => {
         setGuessedLetters((prevLetters) => prevLetters.includes(guess) ? [...prevLetters] : [...prevLetters, guess]);
     }
 
+    function random() {
+        const words = ['react', 'angular', 'vue', 'svelte'];
+        return words[Math.floor(Math.random() * words.length)].toUpperCase();
+    }
+
     function restart() {
         setGuessedLetters([]);
+        setCurrentWord(random());
     }
 
     function gameInProgress() {
