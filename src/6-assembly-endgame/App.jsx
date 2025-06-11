@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Keyboard from './components/Keyboard.jsx';
 import { languages } from './data/languages.js';
 import Confetti from 'react-confetti';
-import { getWords } from './data/api.js';
+import { getDefinitionFor, getWords } from './data/api.js';
 import { getRandomWord } from './utils/utils.js';
 import { Difficulty } from './const.js';
 import DifficultyToggle from './components/DifficultyToggle.jsx';
@@ -15,6 +15,7 @@ export default function App() {
 
     // State
     const [currentWord, setCurrentWord] = useState(() => null);
+    const [definition, setDefinition] = useState(() => null);
     const [guessedLetters, setGuessedLetters] = useState([]);
     const [lastKeyStroke, setLastKeyStroke] = useState(() => '');
     const [difficulty, setDifficulty] = useState(() => Difficulty.NORMAL);
@@ -44,6 +45,12 @@ export default function App() {
         guessedLettersRef.current = guessedLetters;
     }, [guessedLetters]);
 
+    const getDefinition = (word) => {
+        getDefinitionFor(word).then(wordDefinition => {
+            setDefinition(_ => wordDefinition);
+        });
+    }
+
     const setDifficultyLevel = (difficulty) => {
         setDifficulty(difficulty);
     }
@@ -55,13 +62,14 @@ export default function App() {
     const restart = () => {
         setLastKeyStroke('');
         setGuessedLetters([]);
+        setDefinition(null);
         getNewWord();
     }
 
     const getNewWord = () => {
         getWords(randomLetter).then(wordList => {
             setCurrentWord(_ => {
-                return getRandomWord(wordList, difficulty)
+                return getRandomWord(wordList, difficulty);
             });
         });
     }
@@ -76,6 +84,10 @@ export default function App() {
 
     if(!gameInProgress && lastKeyStroke === 'enter') {
         restart();
+    }
+
+    if(!gameInProgress && definition === null) {
+        getDefinition(currentWord);
     }
 
     if(alphabet.includes(lastKeyStroke) && gameInProgress) {
@@ -117,7 +129,7 @@ export default function App() {
                     isLastGuessIncorrect={lastGuessIncorrect}
                     language={wrongGuessCount >= 1 && languages[wrongGuessCount - 1]?.name}/>
                 <LanguageBar wrongGuessCount={wrongGuessCount}/>
-                <Word word={word} gameIsLost={gameIsLost} guessedLetters={guessedLetters} />
+                <Word gameInProgress={gameInProgress} word={word} gameIsLost={gameIsLost} guessedLetters={guessedLetters} definition={definition} />
                 <Keyboard alphabet={alphabet} gameInProgress={gameInProgress} currentWord={currentWord} guess={guessLetter}
                           guessedLetters={guessedLetters}/>
                 {!gameInProgress &&

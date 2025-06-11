@@ -4,7 +4,7 @@ import { getFarewellText } from '../utils/utils.js';
 export function StatusBar({ isGameInProgress, won, lost, isLastGuessIncorrect, language }) {
 
     const gameClasses = clsx('status-bar', {
-        'status-bar-incorrect': isLastGuessIncorrect,
+        'status-bar-incorrect': (!won && !lost) && isLastGuessIncorrect,
         'status-bar-won': won,
         'status-bar-lost': lost,
     })

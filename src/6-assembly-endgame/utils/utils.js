@@ -32,3 +32,12 @@ export function getFarewellText(language) {
     const randomIndex = Math.floor(Math.random() * options.length);
     return options[randomIndex];
 }
+
+/**
+ * regex to split on : or \t
+ * @param defString
+ */
+export function stripPrefix(defString) {
+    const parts = defString.split(/[:\t]/);
+    return parts.slice(1).join(':').trim(); // join in case definition has colons
+}

@@ -1,6 +1,6 @@
 import { clsx } from 'clsx';
 
-export default function Word({ word, gameIsLost, guessedLetters }) {
+export default function Word({ gameInProgress, word, gameIsLost, guessedLetters, definition }) {
 
     const letters = word.map((letter, i) => {
         const letterStyle = clsx('letter', { reveal: gameIsLost && !guessedLetters.includes(letter) })
@@ -12,11 +12,16 @@ export default function Word({ word, gameIsLost, guessedLetters }) {
 
     return (
         <>
-        <section className='word' >
-            {letters}
-        </section>
-        <section
-            className='sr-only'
+            <section className='word'>
+                <div className='word-wrapper'>
+                    <div className='letters'>
+                        {letters}
+                    </div>
+                    { !gameInProgress && <div title={definition} className='definition'>{definition}</div> }
+                </div>
+            </section>
+            <section
+                className='sr-only'
             aria-live='polite'
             role='status'
         >
