@@ -1,30 +1,37 @@
+import { clsx } from 'clsx';
 import { getFarewellText } from '../utils/utils.js';
 
 export function StatusBar({ won, lost, isLastGuessIncorrect, language }) {
 
-    let status = null;
+    const gameClasses = clsx('status-bar', {
+        'status-bar-incorrect': isLastGuessIncorrect,
+        'status-bar-won': won,
+        'status-bar-lost': lost,
+    })
 
-    if(isLastGuessIncorrect) {
-        status = <div className="status-bar status-bar-incorrect">
-            <span>{getFarewellText(language)}</span>
-        </div>;
-    } else {
+    function renderText() {
+        if(isLastGuessIncorrect) {
+            return <span>{getFarewellText(language)}</span>;
+        }
+
         if(won) {
-            status = <div className="status-bar status-bar-won">
-                <span className="title">You win!</span>
+            return <>
+                <span>You win!</span>
                 <span>Well done! 🎉</span>
-            </div>;
+            </>
         } else if(lost) {
-            status = <div className="status-bar status-bar-lost">
-                <span className="title">Game over!</span>
+            return <>
+                <span>Game over!</span>
                 <span>You lose! Better start learning Assembly 😭</span>
-            </div>;
+            </>
         }
     }
 
     return (
         <section className='status-bar'>
-            {status}
+            <div className={gameClasses}>
+                {renderText()}
+            </div>
         </section>
     )
 }

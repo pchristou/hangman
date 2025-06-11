@@ -9,7 +9,6 @@ import { languages } from './data/languages.js';
 /**
  *  * Backlog:
  *  *
- *  * - Farewell messages in status section
  *  * - Fix a11y issues
  *  * - Make the new game button work
  *  * - Choose a random word from a list of words
@@ -17,21 +16,20 @@ import { languages } from './data/languages.js';
  *  */
 export default function App() {
 
+    // State
     const [currentWord, setCurrentWord] = useState('react'.toUpperCase());
     const [guessedLetters, setGuessedLetters] = useState([]);
+
+    // Derived
+    const lastGuessIncorrect = guessedLetters.length > 0 && !currentWord.includes(guessedLetters[guessedLetters.length - 1]);
+    const word = currentWord.split('').map(char => guessedLetters.includes(char) ? char : '')
+    const wrongGuessCount = guessedLetters.reduce((acc, curr) => !currentWord.includes(curr) ? acc + 1 : acc, 0);
+    const gameIsLost = wrongGuessCount === (languages.length - 1);
+    const gameIsWon = currentWord.split('').every(char => guessedLetters.includes(char));
 
     const guessLetter = (guess) => {
         gameInProgress() && setGuessedLetters((prevLetters) => prevLetters.includes(guess) ? [...prevLetters] : [...prevLetters, guess]);
     }
-
-    const lastGuessIncorrect = guessedLetters.length > 0 && !currentWord.includes(guessedLetters[guessedLetters.length - 1]);
-
-    const word = currentWord.split('').map(char => guessedLetters.includes(char) ? char : '')
-
-    const wrongGuessCount = guessedLetters.reduce((acc, curr) => !currentWord.includes(curr) ? acc + 1 : acc, 0);
-
-    const gameIsLost = wrongGuessCount === (languages.length - 1);
-    const gameIsWon = currentWord.split('').every(char => guessedLetters.includes(char));
 
     function restart() {
         setGuessedLetters([]);
