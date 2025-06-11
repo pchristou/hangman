@@ -39,7 +39,11 @@ import Keyboard from './components/Keyboard.jsx';
 export default function App() {
 
     const [currentWord, setCurrentWord] = useState('react');
+    const [guessedLetters, setGuessedLetters] = useState([]);
 
+    const guessLetter = (char) => setGuessedLetters((prevLetters) => prevLetters.includes(char) ? [...prevLetters] : [...prevLetters, char]);
+
+    console.log(guessedLetters);
     return (
         <div className='assembly-end-game'>
             <div className='center'>
@@ -49,7 +53,7 @@ export default function App() {
                 <StatusBar gameState='won'/>
                 <LanguageBar/>
                 <Word word={currentWord}/>
-                <Keyboard/>
+                <Keyboard guess={guessLetter} />
                 <button className="new-game">New Game</button>
             </div>
         </div>
