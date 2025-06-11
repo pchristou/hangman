@@ -18,10 +18,12 @@ export default function App() {
     const [guessedLetters, setGuessedLetters] = useState([]);
 
     // Derived
-    const lastGuessIncorrect = guessedLetters.length > 0 && !currentWord.includes(guessedLetters[guessedLetters.length - 1]);
+    const lastGuessedLetter = guessedLetters[guessedLetters.length - 1] ?? null;
+    const lastGuessIncorrect = guessedLetters.length > 0 && !currentWord.includes(lastGuessedLetter);
     const word = currentWord.split('').map(char => guessedLetters.includes(char) ? char : '')
     const wrongGuessCount = guessedLetters.reduce((acc, curr) => !currentWord.includes(curr) ? acc + 1 : acc, 0);
     const gameIsLost = wrongGuessCount === (languages.length - 1);
+    const guessesRemaining = (languages.length - 1) - wrongGuessCount;
     const gameIsWon = currentWord.split('').every(char => guessedLetters.includes(char));
 
     document.addEventListener('keypress', keyPressCb);
@@ -73,13 +75,32 @@ export default function App() {
     return (
         <div className='assembly-end-game'>
             <div className='center'>
+
+                <section
+                    className='sr-only'
+                    aria-live='polite'
+                    role='status'
+                >
+                    <p>{
+                        lastGuessIncorrect
+                        ? `Wrong, ${guessedLetters[guessedLetters.length - 1]} is not there`
+                        : `Correct, ${guessedLetters[guessedLetters.length - 1]} is there`
+                    }
+
+                        {`${guessesRemaining} lives remaining`}
+
+                    </p>
+                </section>
+
                 <Header/>
-                <StatusBar won={gameIsWon} lost={gameIsLost} isLastGuessIncorrect={lastGuessIncorrect} language={wrongGuessCount >= 1 && languages[wrongGuessCount-1].name} />
+                <StatusBar won={gameIsWon} lost={gameIsLost} isLastGuessIncorrect={lastGuessIncorrect}
+                           language={wrongGuessCount >= 1 && languages[wrongGuessCount - 1].name}/>
                 <LanguageBar wrongGuessCount={wrongGuessCount}/>
                 <Word word={word}/>
-                <Keyboard alphabet={alphabet()} gameInProgress={gameInProgress} currentWord={currentWord} guess={guessLetter} guessedLetters={guessedLetters} />
-                { !gameInProgress() && <button className="new-game" onClick={restart}>{'New Game <Enter>'}</button> }
-                { gameIsWon && <Confetti/> }
+                <Keyboard alphabet={alphabet()} gameInProgress={gameInProgress} currentWord={currentWord} guess={guessLetter}
+                          guessedLetters={guessedLetters}/>
+                {!gameInProgress() && <button className="new-game" onClick={restart}>{'New Game <Enter>'}</button>}
+                {gameIsWon && <Confetti/>}
             </div>
         </div>
     )

@@ -7,8 +7,18 @@ export default function Word({ word }) {
     )
 
     return (
-        <section className='word'>
+        <>
+        <section className='word' >
             {letters}
         </section>
+        <section
+            className='sr-only'
+            aria-live='polite'
+            role='status'
+        >
+            <p>Current word: {word.map(letter =>
+                letter === "" ? "blank" : letter)}</p>
+        </section>
+            </>
     )
 }

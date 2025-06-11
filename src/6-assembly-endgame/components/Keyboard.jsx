@@ -9,7 +9,15 @@ export default function Keyboard({ alphabet, currentWord, gameInProgress, guess,
         const incorrectGuess = isGuessed && !currentWord.includes(char);
         let style = clsx({ right: correctGuess, wrong: incorrectGuess });
 
-        return <button disabled={!gameInProgress()} onClick={() => guess(char.toUpperCase())} key={char} className={style}>{char}</button>
+        return <button
+            aria-label={`Letter ${char}`}
+            aria-disabled={!gameInProgress}
+            disabled={!gameInProgress()}
+            onClick={() => guess(char.toUpperCase())}
+            key={char}
+            className={style}>
+            {char}
+        </button>
     });
 
     return (

@@ -28,7 +28,7 @@ export function StatusBar({ won, lost, isLastGuessIncorrect, language }) {
     }
 
     return (
-        <section className='status-bar'>
+        <section className='status-bar' aria-live='polite' role='status'>
             <div className={gameClasses}>
                 {renderText()}
             </div>
