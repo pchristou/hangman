@@ -10,8 +10,11 @@ import { getDefinitionFor, getWords } from './data/api.js';
 import { getRandomWord } from './utils/utils.js';
 import { Difficulty } from './const.js';
 import DifficultyToggle from './components/DifficultyToggle.jsx';
+import { useWindowSize } from 'react-use'
 
 export default function App() {
+
+    const { width, height } = useWindowSize()
 
     // State
     const [currentWord, setCurrentWord] = useState(() => null);
@@ -139,7 +142,9 @@ export default function App() {
                     />}
                 {!gameInProgress && <button className="new-game" onClick={() => restart()}>{'New Game <Enter>'}</button>}
                 {gameIsWon && <Confetti recycle={false}
-                                        numberOfPieces={1000}/>}
+                           width={width}
+                           height={height-1}
+                           numberOfPieces={1000}/>}
             </div>
         </div>
     )
