@@ -31,7 +31,7 @@ export default function App() {
         document.addEventListener('keypress', keyPressCb);
 
         return () => document.removeEventListener('keypress', keyPressCb);
-    }, []);
+    });
 
     const guessLetter = (guess) => {
         setGuessedLetters((prevLetters) => prevLetters.includes(guess) ? prevLetters : [...prevLetters, guess]);
@@ -46,13 +46,12 @@ export default function App() {
         const keyPress = event.key.toLowerCase();
 
         if(!gameInProgress()) {
-            console.log(keyPress);
             if(keyPress === 'enter') {
                 restart();
             }
         }
 
-        if(alphabet().includes(keyPress)) {
+        if(alphabet().includes(keyPress) && gameInProgress()) {
             // prevent duplicates
             if(!guessedLetters.includes(keyPress)) {
                 guessLetter(event.key);
@@ -95,7 +94,7 @@ export default function App() {
                     won={gameIsWon}
                     lost={gameIsLost}
                     isLastGuessIncorrect={lastGuessIncorrect}
-                    language={wrongGuessCount >= 1 && languages[wrongGuessCount - 1].name}/>
+                    language={wrongGuessCount >= 1 && languages[wrongGuessCount - 1]?.name}/>
                 <LanguageBar wrongGuessCount={wrongGuessCount}/>
                 <Word word={word} gameIsLost={gameIsLost} guessedLetters={guessedLetters} />
                 <Keyboard alphabet={alphabet()} gameInProgress={gameInProgress} currentWord={currentWord} guess={guessLetter}
