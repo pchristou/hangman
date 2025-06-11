@@ -28,7 +28,7 @@ export default function App() {
     const gameIsWon = currentWord.split('').every(char => guessedLetters.includes(char));
 
     const guessLetter = (guess) => {
-        gameInProgress() && setGuessedLetters((prevLetters) => prevLetters.includes(guess) ? [...prevLetters] : [...prevLetters, guess]);
+        setGuessedLetters((prevLetters) => prevLetters.includes(guess) ? [...prevLetters] : [...prevLetters, guess]);
     }
 
     function restart() {
@@ -46,7 +46,7 @@ export default function App() {
                 <StatusBar won={gameIsWon} lost={gameIsLost} isLastGuessIncorrect={lastGuessIncorrect} language={wrongGuessCount >= 1 && languages[wrongGuessCount-1].name} />
                 <LanguageBar wrongGuessCount={wrongGuessCount}/>
                 <Word word={word}/>
-                <Keyboard currentWord={currentWord} guess={guessLetter} guessedLetters={guessedLetters} />
+                <Keyboard gameInProgress={gameInProgress} currentWord={currentWord} guess={guessLetter} guessedLetters={guessedLetters} />
                 { !gameInProgress() && <button className="new-game" onClick={restart}>New Game</button> }
             </div>
         </div>
