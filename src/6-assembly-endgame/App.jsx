@@ -38,7 +38,7 @@ import Keyboard from './components/Keyboard.jsx';
  */
 export default function App() {
 
-    const [currentWord, setCurrentWord] = useState('react');
+    const [currentWord, setCurrentWord] = useState('react'.toUpperCase());
     const [guessedLetters, setGuessedLetters] = useState([]);
 
     const guessLetter = (char) => setGuessedLetters((prevLetters) => prevLetters.includes(char) ? [...prevLetters] : [...prevLetters, char]);

@@ -2,7 +2,7 @@ import {clsx } from 'clsx';
 
 export default function Keyboard({ currentWord, guess, guessedLetters }) {
 
-    const alphabet = [...Array(26).keys()].map((n) => String.fromCharCode(65 + n).toLowerCase());
+    const alphabet = [...Array(26).keys()].map((n) => String.fromCharCode(65 + n).toUpperCase());
     const buttons = alphabet.map((char) => {
 
         const isGuessed = guessedLetters.includes(char);
@@ -10,7 +10,7 @@ export default function Keyboard({ currentWord, guess, guessedLetters }) {
         const incorrectGuess = isGuessed && !currentWord.includes(char);
         let style = clsx({ right: correctGuess, wrong: incorrectGuess });
 
-        return <button onClick={() => guess(char.toLowerCase())} key={char} className={style}>{char}</button>
+        return <button onClick={() => guess(char.toUpperCase())} key={char} className={style}>{char}</button>
     });
 
     return (
