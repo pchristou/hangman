@@ -43,7 +43,6 @@ export default function App() {
 
     const guessLetter = (char) => setGuessedLetters((prevLetters) => prevLetters.includes(char) ? [...prevLetters] : [...prevLetters, char]);
 
-    console.log(guessedLetters);
     return (
         <div className='assembly-end-game'>
             <div className='center'>
@@ -53,7 +52,7 @@ export default function App() {
                 <StatusBar gameState='won'/>
                 <LanguageBar/>
                 <Word word={currentWord}/>
-                <Keyboard guess={guessLetter} />
+                <Keyboard currentWord={currentWord} guess={guessLetter} guessedLetters={guessedLetters} />
                 <button className="new-game">New Game</button>
             </div>
         </div>
