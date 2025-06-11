@@ -12,7 +12,7 @@ export default function Keyboard({ alphabet, currentWord, gameInProgress, guess,
         return <button
             aria-label={`Letter ${char}`}
             aria-disabled={!gameInProgress}
-            disabled={!gameInProgress()}
+            disabled={!gameInProgress}
             onClick={() => guess(char)}
             key={char}
             className={style}>

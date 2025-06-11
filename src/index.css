@@ -705,6 +705,7 @@ body {
 
 .assembly-end-game {
 
+    overflow: hidden;
     margin: 0;
     font-family: "Hanken Grotesk", Arial, sans-serif;
     background-color: #262626;
