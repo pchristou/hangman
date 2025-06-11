@@ -5,12 +5,12 @@ import Word from './components/Word.jsx';
 import { useState } from 'react';
 import Keyboard from './components/Keyboard.jsx';
 import { languages } from './data/languages.js';
+import Confetti from 'react-confetti';
 
 /**
  *  * Backlog:
  *  *
  *  * - Fix a11y issues
- *  * - Confetti drop when the user wins
  *  */
 export default function App() {
 
@@ -53,6 +53,7 @@ export default function App() {
                 <Word word={word}/>
                 <Keyboard gameInProgress={gameInProgress} currentWord={currentWord} guess={guessLetter} guessedLetters={guessedLetters} />
                 { !gameInProgress() && <button className="new-game" onClick={restart}>New Game</button> }
+                { gameIsWon && <Confetti/> }
             </div>
         </div>
     )
