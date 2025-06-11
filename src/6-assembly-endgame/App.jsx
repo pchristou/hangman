@@ -56,18 +56,12 @@ export default function App() {
         setGameState('won');
     }
 
-    // useEffect(() => {
-    //     if(wrongGuessCount === 8) {
-    //         setGameState('lost');
-    //     }
-    // }, [wrongGuessCount]);
-
     return (
         <div className='assembly-end-game'>
             <div className='center'>
                 <Header/>
                 <StatusBar gameState={gameState}/>
-                <LanguageBar/>
+                <LanguageBar wrongGuessCount={wrongGuessCount}/>
                 <Word word={word}/>
                 <Keyboard currentWord={currentWord} guess={guessLetter} guessedLetters={guessedLetters} />
                 <button className="new-game">New Game</button>
