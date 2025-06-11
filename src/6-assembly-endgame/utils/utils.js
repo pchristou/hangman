@@ -1,7 +1,16 @@
-import { words } from '../data/words.js';
+import { Difficulty, HARD_THRESHOLD } from '../const.js';
 
-export function getRandomWord() {
-    return words[Math.floor(Math.random() * words.length)];
+export function getRandomWord(wordList, difficulty) {
+    // logic for difficulty
+    const words = difficulty === Difficulty.NORMAL ? wordList : getDifficultWords(wordList);
+    return words[Math.floor(Math.random() * words.length)].word.replace('-', '');
+}
+
+function getDifficultWords(wordList) {
+    return wordList.filter(wordEntry => {
+        const frequency = wordEntry.tags[0].replace('f:', '');
+        return frequency < HARD_THRESHOLD;
+    })
 }
 
 export function getFarewellText(language) {

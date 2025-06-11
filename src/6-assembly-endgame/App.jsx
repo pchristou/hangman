@@ -7,17 +7,17 @@ import Keyboard from './components/Keyboard.jsx';
 import { languages } from './data/languages.js';
 import Confetti from 'react-confetti';
 import { getWords } from './data/api.js';
+import { getRandomWord } from './utils/utils.js';
+import { Difficulty } from './const.js';
+import DifficultyToggle from './components/DifficultyToggle.jsx';
 
-/**
- *  * Backlog:
- *  * - Fix a11y issues
- *  */
 export default function App() {
 
     // State
     const [currentWord, setCurrentWord] = useState(() => null);
     const [guessedLetters, setGuessedLetters] = useState([]);
     const [lastKeyStroke, setLastKeyStroke] = useState(() => '');
+    const [difficulty, setDifficulty] = useState(() => Difficulty.NORMAL);
 
     // Refs
     // The ref allows us to avoid rebinding the keyPressCb event handler every time guessedLetters changes = better performance
@@ -37,15 +37,16 @@ export default function App() {
     const randomLetter = alphabet[Math.floor(Math.random() * alphabet.length)];
 
     useEffect(() => {
-        getWords(randomLetter).then(w => {
-            const word = w[0].word.replace('-', '')
-            setCurrentWord(prevCurrentWord => { return word });
-        });
+        getNewWord();
     }, []);
 
     useEffect(() => {
         guessedLettersRef.current = guessedLetters;
     }, [guessedLetters]);
+
+    const setDifficultyLevel = (difficulty) => {
+        setDifficulty(difficulty);
+    }
 
     const guessLetter = (guess) => {
         setGuessedLetters((prevLetters) => prevLetters.includes(guess) ? prevLetters : [...prevLetters, guess]);
@@ -54,14 +55,16 @@ export default function App() {
     const restart = () => {
         setLastKeyStroke('');
         setGuessedLetters([]);
+        getNewWord();
+    }
 
-        getWords(randomLetter).then(w => {
+    const getNewWord = () => {
+        getWords(randomLetter).then(wordList => {
             setCurrentWord(_ => {
-                return w[Math.floor(Math.random() * w.length)].word.replace('-', ''); // e.g. well-being becomes wellbeing
+                return getRandomWord(wordList, difficulty)
             });
         });
     }
-
 
     const keyPressCb = useCallback((event) => {
         const keyPress = event.key.toLowerCase();
@@ -117,6 +120,11 @@ export default function App() {
                 <Word word={word} gameIsLost={gameIsLost} guessedLetters={guessedLetters} />
                 <Keyboard alphabet={alphabet} gameInProgress={gameInProgress} currentWord={currentWord} guess={guessLetter}
                           guessedLetters={guessedLetters}/>
+                {!gameInProgress &&
+                    <DifficultyToggle
+                        difficulty={difficulty}
+                        setDifficulty={setDifficultyLevel}
+                    />}
                 {!gameInProgress && <button className="new-game" onClick={() => restart()}>{'New Game <Enter>'}</button>}
                 {gameIsWon && <Confetti recycle={false}
                                         numberOfPieces={1000}/>}
