@@ -100,7 +100,8 @@ export default function App() {
                 <Keyboard alphabet={alphabet()} gameInProgress={gameInProgress} currentWord={currentWord} guess={guessLetter}
                           guessedLetters={guessedLetters}/>
                 {!gameInProgress() && <button className="new-game" onClick={restart}>{'New Game <Enter>'}</button>}
-                {gameIsWon && <Confetti/>}
+                {gameIsWon && <Confetti recycle={false}
+                                        numberOfPieces={1000}/>}
             </div>
         </div>
     )
