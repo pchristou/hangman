@@ -25,8 +25,8 @@ export function StatusBar({ gameState }) {
     }
 
     return (
-        <>
+        <section className='status-bar'>
             {status}
-        </>
+        </section>
     )
 }

@@ -8,10 +8,10 @@ export default function LanguageBar() {
     })
 
     return (
-        <div className='language-bar-wrapper'>
+        <section className='language-bar-wrapper'>
             <div className='pills'>
                 { pills }
             </div>
-        </div>
+        </section>
     )
 }

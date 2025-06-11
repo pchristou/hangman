@@ -7,8 +7,8 @@ export default function Word({ word }) {
     )
 
     return (
-        <div className='word'>
+        <section className='word'>
         {letters}
-        </div>
+        </section>
     )
 }

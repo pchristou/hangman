@@ -3,6 +3,7 @@ import { StatusBar } from './components/StatusBar.jsx';
 import LanguageBar from './components/LanguageBar.jsx';
 import Word from './components/Word.jsx';
 import { useState } from 'react';
+import Keyboard from './components/Keyboard.jsx';
 
 /**
  * Project planning:
@@ -42,12 +43,14 @@ export default function App() {
     return (
         <div className='assembly-end-game'>
             <div className='center'>
-                <Header />
-                <StatusBar gameState='correct' />
-                <StatusBar gameState='lost' />
-                <StatusBar gameState='won' />
-                <LanguageBar />
-                <Word word={currentWord} />
+                <Header/>
+                <StatusBar gameState='correct'/>
+                <StatusBar gameState='lost'/>
+                <StatusBar gameState='won'/>
+                <LanguageBar/>
+                <Word word={currentWord}/>
+                <Keyboard/>
+                <button className="new-game">New Game</button>
             </div>
         </div>
     )

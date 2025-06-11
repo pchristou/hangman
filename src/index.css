@@ -41,7 +41,6 @@ body {
         margin: 0;
         display: flex;
         min-width: 320px;
-        min-height: 100vh;
     }
 
     h1 {
@@ -709,7 +708,7 @@ body {
     background-color: #262626;
     color: #D9D9D9;
     padding: 20px;
-    height: 100vh;
+    height: 100%;
     display: flex;
     justify-content: center;
 
@@ -723,6 +722,7 @@ body {
         text-align: center;
         display: flex;
         flex-direction: column;
+        align-items: center;
         gap: 36px;
     }
 
@@ -734,7 +734,6 @@ body {
     .assembly-end-game-header {
         display: flex;
         width: 352px;
-        height: 144px;
         flex-direction: column;
         align-items: center;
         flex-shrink: 0;
@@ -785,7 +784,7 @@ body {
             display: flex;
             flex-wrap: wrap;
             flex-grow: 1;
-            gap: 1.5px;
+            gap: 5px;
             justify-content: center;
             width: 253.5px;
 
@@ -810,5 +809,39 @@ body {
             width: 40px;
             font-size: 1.125rem;
         }
+    }
+
+    .keyboard {
+        width: 384px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .key {
+        display: flex;
+        height: 35px;
+        width: 35px;
+        padding: 6px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: #FCBA29;
+        border: 1px solid #D7D7D7;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+    button.new-game {
+        background-color: #11B5E5;
+        border: 1px solid #D7D7D7;
+        border-radius: 4px;
+        width: 225px;
+        height: 40px;
+        padding: 6px 12px;
+        display: block;
+        margin-inline: auto;
+        cursor: pointer;
     }
 }
