@@ -2,7 +2,7 @@ import { languages } from '../data/languages.js';
 
 export default function LanguageBar() {
     const pills = languages.map(language => {
-        return <div style={{backgroundColor: language.backgroundColor, color: language.color}}>
+        return <div key={language.name} style={{backgroundColor: language.backgroundColor, color: language.color}}>
             { language.name }
         </div>
     })
