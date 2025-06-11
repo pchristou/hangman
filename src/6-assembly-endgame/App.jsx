@@ -38,7 +38,8 @@ export default function App() {
 
     useEffect(() => {
         getWords(randomLetter).then(w => {
-            setCurrentWord(w[0].word);
+            const word = w[0].word.replace('-', '')
+            setCurrentWord(prevCurrentWord => { return word });
         });
     }, []);
 
@@ -55,9 +56,11 @@ export default function App() {
         setGuessedLetters([]);
 
         getWords(randomLetter).then(w => {
-            setCurrentWord(w[Math.floor(Math.random() * w.length)].word);
+            setCurrentWord(_ => {
+                return w[Math.floor(Math.random() * w.length)].word.replace('-', ''); // e.g. well-being becomes wellbeing
+            });
         });
-    };
+    }
 
 
     const keyPressCb = useCallback((event) => {
