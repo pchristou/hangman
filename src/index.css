@@ -831,6 +831,13 @@ body {
         border: 1px solid #D7D7D7;
         border-radius: 3px;
         cursor: pointer;
+        &.wrong {
+            background-color: red;
+        }
+
+        &.right {
+            background-color: green;
+        }
     }
 
     button.new-game {
