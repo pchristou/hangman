@@ -832,11 +832,11 @@ body {
             border-radius: 3px;
             cursor: pointer;
             &.wrong {
-                background-color: red;
+                background-color: #EC5D49;
             }
 
             &.right {
-                background-color: green;
+                background-color: #10A95B;
             }
         }
     }
