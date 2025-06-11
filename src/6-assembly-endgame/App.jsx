@@ -43,9 +43,10 @@ export default function App() {
 
     function keyPressCb(event) {
 
-        const keyPress = event.key;
+        const keyPress = event.key.toLowerCase();
 
         if(!gameInProgress()) {
+            console.log(keyPress);
             if(keyPress === 'enter') {
                 restart();
             }
