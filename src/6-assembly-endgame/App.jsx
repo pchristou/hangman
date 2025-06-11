@@ -96,7 +96,7 @@ export default function App() {
                     isLastGuessIncorrect={lastGuessIncorrect}
                     language={wrongGuessCount >= 1 && languages[wrongGuessCount - 1].name}/>
                 <LanguageBar wrongGuessCount={wrongGuessCount}/>
-                <Word word={word}/>
+                <Word word={word} gameIsLost={gameIsLost} currentWord={currentWord} />
                 <Keyboard alphabet={alphabet()} gameInProgress={gameInProgress} currentWord={currentWord} guess={guessLetter}
                           guessedLetters={guessedLetters}/>
                 {!gameInProgress() && <button className="new-game" onClick={restart}>{'New Game <Enter>'}</button>}

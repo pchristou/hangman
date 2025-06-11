@@ -841,6 +841,10 @@ body {
             height: 37.5px;
             font-size: 1.125rem;
         }
+
+        .reveal {
+            color: #EC5D49;
+        }
     }
 
     .keyboard {

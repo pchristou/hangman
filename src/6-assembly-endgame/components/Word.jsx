@@ -1,10 +1,24 @@
-export default function Word({ word }) {
+import { clsx } from 'clsx';
 
-    const letters = word.map((letter, i) =>
-        <span key={i} className='letter'>
-            {letter}
+export default function Word({ word, gameIsLost, currentWord }) {
+
+    console.log(word, gameIsLost, currentWord);
+
+    const letters = word.map((letter, i) => {
+        const letterStyle = clsx('letter', { reveal: gameIsLost && letter === "" })
+        return <span key={i} className={letterStyle}>
+            {getLetter(letter, i)}
         </span>
+        }
     )
+
+    function getLetter(letter, index) {
+        return !gameIsLost
+            ? letter
+            : letter === ""
+                ? currentWord[index]
+                : letter
+    }
 
     return (
         <>
