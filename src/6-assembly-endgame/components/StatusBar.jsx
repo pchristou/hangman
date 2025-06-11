@@ -1,7 +1,7 @@
 import { clsx } from 'clsx';
 import { getFarewellText } from '../utils/utils.js';
 
-export function StatusBar({ won, lost, isLastGuessIncorrect, language }) {
+export function StatusBar({ isGameInProgress, won, lost, isLastGuessIncorrect, language }) {
 
     const gameClasses = clsx('status-bar', {
         'status-bar-incorrect': isLastGuessIncorrect,
@@ -10,7 +10,7 @@ export function StatusBar({ won, lost, isLastGuessIncorrect, language }) {
     })
 
     function renderText() {
-        if(isLastGuessIncorrect) {
+        if(isLastGuessIncorrect && isGameInProgress) {
             return <span>{getFarewellText(language)}</span>;
         }
 

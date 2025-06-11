@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import Keyboard from './components/Keyboard.jsx';
 import { languages } from './data/languages.js';
 import Confetti from 'react-confetti';
+import { getRandomWord } from './utils/utils.js';
 
 /**
  *  * Backlog:
@@ -14,7 +15,7 @@ import Confetti from 'react-confetti';
 export default function App() {
 
     // State
-    const [currentWord, setCurrentWord] = useState(random());
+    const [currentWord, setCurrentWord] = useState(getRandomWord());
     const [guessedLetters, setGuessedLetters] = useState([]);
 
     // Derived
@@ -58,14 +59,9 @@ export default function App() {
         }
     }
 
-    function random() {
-        const words = ['react', 'angular', 'vue', 'svelte'];
-        return words[Math.floor(Math.random() * words.length)].toUpperCase();
-    }
-
     function restart() {
         setGuessedLetters([]);
-        setCurrentWord(random());
+        setCurrentWord(getRandomWord());
     }
 
     function gameInProgress() {
@@ -93,8 +89,12 @@ export default function App() {
                 </section>
 
                 <Header/>
-                <StatusBar won={gameIsWon} lost={gameIsLost} isLastGuessIncorrect={lastGuessIncorrect}
-                           language={wrongGuessCount >= 1 && languages[wrongGuessCount - 1].name}/>
+                <StatusBar
+                    isGameInProgress={gameInProgress()}
+                    won={gameIsWon}
+                    lost={gameIsLost}
+                    isLastGuessIncorrect={lastGuessIncorrect}
+                    language={wrongGuessCount >= 1 && languages[wrongGuessCount - 1].name}/>
                 <LanguageBar wrongGuessCount={wrongGuessCount}/>
                 <Word word={word}/>
                 <Keyboard alphabet={alphabet()} gameInProgress={gameInProgress} currentWord={currentWord} guess={guessLetter}
