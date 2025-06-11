@@ -721,6 +721,9 @@ body {
 
     .center {
         text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: 36px;
     }
 
     /*
@@ -790,6 +793,22 @@ body {
                 padding: 5px;
                 border-radius: 3px;
             }
+        }
+    }
+
+    .word {
+        display: flex;
+        justify-content: center;
+        gap: 2px;
+        text-transform: uppercase;
+
+        .letter {
+            background-color: #323232;
+            color: #F9F4DA;
+            border-bottom: 2px solid #F9F4DA;
+            padding: 6px;
+            width: 40px;
+            font-size: 1.125rem;
         }
     }
 }
