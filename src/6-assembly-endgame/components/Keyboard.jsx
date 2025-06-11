@@ -8,8 +8,7 @@ export default function Keyboard({ currentWord, guess, guessedLetters }) {
         const isGuessed = guessedLetters.includes(char);
         const correctGuess = isGuessed && currentWord.includes(char);
         const incorrectGuess = isGuessed && !currentWord.includes(char);
-
-        let style = !isGuessed ? clsx({ key: true }) : clsx({ key: true, right: correctGuess, wrong: incorrectGuess });
+        let style = clsx({ right: correctGuess, wrong: incorrectGuess });
 
         return <button onClick={() => guess(char.toLowerCase())} key={char} className={style}>{char}</button>
     });
