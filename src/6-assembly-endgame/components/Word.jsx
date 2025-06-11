@@ -8,7 +8,7 @@ export default function Word({ word }) {
 
     return (
         <section className='word'>
-        {letters}
+            {letters}
         </section>
     )
 }

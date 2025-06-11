@@ -2,7 +2,7 @@ import Header from './components/Header.jsx';
 import { StatusBar } from './components/StatusBar.jsx';
 import LanguageBar from './components/LanguageBar.jsx';
 import Word from './components/Word.jsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Keyboard from './components/Keyboard.jsx';
 
 /**
@@ -40,18 +40,33 @@ export default function App() {
 
     const [currentWord, setCurrentWord] = useState('react'.toUpperCase());
     const [guessedLetters, setGuessedLetters] = useState([]);
+    const [gameState, setGameState] = useState(null);
 
     const guessLetter = (char) => setGuessedLetters((prevLetters) => prevLetters.includes(char) ? [...prevLetters] : [...prevLetters, char]);
 
     const word = currentWord.split('').map(char => guessedLetters.includes(char) ? char : '')
 
+    const wrongGuessCount = guessedLetters.reduce((acc, curr) => !currentWord.includes(curr) ? acc + 1 : acc, 0);
+
+    if(wrongGuessCount === 8 && gameState !== 'lost') {
+        setGameState('lost');
+    }
+
+    if(currentWord.split('').every(char => guessedLetters.includes(char)) && gameState !== 'won') {
+        setGameState('won');
+    }
+
+    // useEffect(() => {
+    //     if(wrongGuessCount === 8) {
+    //         setGameState('lost');
+    //     }
+    // }, [wrongGuessCount]);
+
     return (
         <div className='assembly-end-game'>
             <div className='center'>
                 <Header/>
-                <StatusBar gameState='correct'/>
-                <StatusBar gameState='lost'/>
-                <StatusBar gameState='won'/>
+                <StatusBar gameState={gameState}/>
                 <LanguageBar/>
                 <Word word={word}/>
                 <Keyboard currentWord={currentWord} guess={guessLetter} guessedLetters={guessedLetters} />

@@ -3,8 +3,8 @@ export function StatusBar({ gameState }) {
     let status = null;
 
     switch (gameState) {
-    case 'correct':
-        status = <div className="status-bar status-bar-correct">
+    case 'incorrect':
+        status = <div className="status-bar status-bar-incorrect">
             <span>“Farewell HTML & CSS” 🫡</span>
         </div>;
         break;
