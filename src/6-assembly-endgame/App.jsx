@@ -19,13 +19,13 @@ export default function App() {
     const [guessedLetters, setGuessedLetters] = useState([]);
 
     // Derived
-    const lastGuessedLetter = guessedLetters[guessedLetters.length - 1];
-    const lastGuessIncorrect = lastGuessedLetter && !currentWord.includes(lastGuessedLetter);
-    const word = currentWord.split('').map(char => guessedLetters.includes(char) ? char : '')
     const wrongGuessCount = guessedLetters.reduce((acc, curr) => !currentWord.includes(curr) ? acc + 1 : acc, 0);
     const gameIsLost = wrongGuessCount === (languages.length - 1);
-    const guessesRemaining = (languages.length - 1) - wrongGuessCount;
     const gameIsWon = currentWord.split('').every(char => guessedLetters.includes(char));
+    const lastGuessedLetter = guessedLetters[guessedLetters.length - 1];
+    const lastGuessIncorrect = lastGuessedLetter && !currentWord.includes(lastGuessedLetter);
+    const word = currentWord.split('').map(char => (gameIsLost || guessedLetters.includes(char)) ? char : '')
+    const guessesRemaining = (languages.length - 1) - wrongGuessCount;
 
     document.addEventListener('keypress', keyPressCb);
 
@@ -96,7 +96,7 @@ export default function App() {
                     isLastGuessIncorrect={lastGuessIncorrect}
                     language={wrongGuessCount >= 1 && languages[wrongGuessCount - 1].name}/>
                 <LanguageBar wrongGuessCount={wrongGuessCount}/>
-                <Word word={word} gameIsLost={gameIsLost} currentWord={currentWord} />
+                <Word word={word} gameIsLost={gameIsLost} guessedLetters={guessedLetters} />
                 <Keyboard alphabet={alphabet()} gameInProgress={gameInProgress} currentWord={currentWord} guess={guessLetter}
                           guessedLetters={guessedLetters}/>
                 {!gameInProgress() && <button className="new-game" onClick={restart}>{'New Game <Enter>'}</button>}
