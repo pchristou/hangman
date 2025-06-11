@@ -1,6 +1,6 @@
 import { getFarewellText } from '../utils/utils.js';
 
-export function StatusBar({ gameState, isLastGuessIncorrect, language }) {
+export function StatusBar({ won, lost, isLastGuessIncorrect, language }) {
 
     let status = null;
 
@@ -9,22 +9,16 @@ export function StatusBar({ gameState, isLastGuessIncorrect, language }) {
             <span>{getFarewellText(language)}</span>
         </div>;
     } else {
-
-        switch (gameState) {
-        case 'won':
+        if(won) {
             status = <div className="status-bar status-bar-won">
                 <span className="title">You win!</span>
                 <span>Well done! 🎉</span>
             </div>;
-            break;
-        case 'lost':
+        } else if(lost) {
             status = <div className="status-bar status-bar-lost">
                 <span className="title">Game over!</span>
                 <span>You lose! Better start learning Assembly 😭</span>
             </div>;
-            break;
-        default:
-            status = null;
         }
     }
 

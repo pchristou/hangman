@@ -19,10 +19,9 @@ export default function App() {
 
     const [currentWord, setCurrentWord] = useState('react'.toUpperCase());
     const [guessedLetters, setGuessedLetters] = useState([]);
-    const [gameState, setGameState] = useState(null);
 
     const guessLetter = (guess) => {
-        !['lost', 'won'].includes(gameState) && setGuessedLetters((prevLetters) => prevLetters.includes(guess) ? [...prevLetters] : [...prevLetters, guess]);
+        gameInProgress() && setGuessedLetters((prevLetters) => prevLetters.includes(guess) ? [...prevLetters] : [...prevLetters, guess]);
     }
 
     const lastGuessIncorrect = guessedLetters.length > 0 && !currentWord.includes(guessedLetters[guessedLetters.length - 1]);
@@ -31,28 +30,26 @@ export default function App() {
 
     const wrongGuessCount = guessedLetters.reduce((acc, curr) => !currentWord.includes(curr) ? acc + 1 : acc, 0);
 
-    if(wrongGuessCount === (languages.length - 1) && gameState !== 'lost') {
-        setGameState('lost');
-    }
-
-    if(currentWord.split('').every(char => guessedLetters.includes(char)) && gameState !== 'won') {
-        setGameState('won');
-    }
+    const gameIsLost = wrongGuessCount === (languages.length - 1);
+    const gameIsWon = currentWord.split('').every(char => guessedLetters.includes(char));
 
     function restart() {
         setGuessedLetters([]);
-        setGameState(null);
+    }
+
+    function gameInProgress() {
+        return (!gameIsLost && !gameIsWon);
     }
 
     return (
         <div className='assembly-end-game'>
             <div className='center'>
                 <Header/>
-                <StatusBar gameState={gameState} isLastGuessIncorrect={lastGuessIncorrect} language={wrongGuessCount >= 1 && languages[wrongGuessCount-1].name} />
+                <StatusBar won={gameIsWon} lost={gameIsLost} isLastGuessIncorrect={lastGuessIncorrect} language={wrongGuessCount >= 1 && languages[wrongGuessCount-1].name} />
                 <LanguageBar wrongGuessCount={wrongGuessCount}/>
                 <Word word={word}/>
                 <Keyboard currentWord={currentWord} guess={guessLetter} guessedLetters={guessedLetters} />
-                { ['lost', 'won'].includes(gameState) && <button className="new-game" onClick={restart}>New Game</button> }
+                { !gameInProgress() && <button className="new-game" onClick={restart}>New Game</button> }
             </div>
         </div>
     )
