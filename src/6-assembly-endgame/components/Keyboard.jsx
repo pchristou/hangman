@@ -1,8 +1,7 @@
 import {clsx } from 'clsx';
 
-export default function Keyboard({ currentWord, gameInProgress, guess, guessedLetters }) {
+export default function Keyboard({ alphabet, currentWord, gameInProgress, guess, guessedLetters }) {
 
-    const alphabet = [...Array(26).keys()].map((n) => String.fromCharCode(65 + n).toUpperCase());
     const buttons = alphabet.map((char) => {
 
         const isGuessed = guessedLetters.includes(char);
